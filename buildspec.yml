@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm install
+      - npm install -g @angular/cli
+  pre_build:
+    commands:
+      - echo Pre Build Stage
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI=440644114391.dkr.ecr.ap-northeast-1.amazonaws.com/be-app
+  build:
+    commands:
+      - echo Build started on `date`
+      - ng build
+artifacts:
+    files:
+      - '**/*'
+    base-directory: 'dist*'
+    discard-paths: yes
